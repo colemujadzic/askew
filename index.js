@@ -34,6 +34,10 @@ const parseArray = (arr) => {
     return parsedArray;
 }
 
+const writeToFile = (arr) => {
+    return fs.writeFileSync('./data.json', JSON.stringify(arr, null, 2) , 'utf-8');
+}
+
 
 const main = async () => {
     try {
@@ -44,7 +48,7 @@ const main = async () => {
         });
         const splitLines = lines.splice(index + 2);
         const parsed = parseArray(splitLines);
-        fs.writeFileSync('./data.json', JSON.stringify(parsed, null, 2) , 'utf-8');
+        writeToFile(parsed);
     } catch (error) {
         console.log(error);
     }
