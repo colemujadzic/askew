@@ -1,7 +1,10 @@
+import 'reflect-metadata';
 import _ from 'lodash';
 import fs from 'fs';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axios = require('axios').default;
+import express from 'express';
+const app = express();
 
 // the location of the markdown file
 const url =
@@ -52,12 +55,14 @@ const parseArray = (arr: Array<string>) => {
     return products;
 };
 
+/*
 // writeToFile() writes the resultant Product array to a file
 const writeToFile = (arr: Product[]) => {
     return fs.writeFileSync('./data.json', JSON.stringify(arr, null, 2), 'utf-8');
 };
+*/
 
-const main = async () => {
+app.get('/products', async (req, res) => {
     try {
         const response = await fetchMarkdown();
         const lines = response.split('\n');
@@ -66,10 +71,11 @@ const main = async () => {
         });
         const splitLines = lines.splice(index + 2);
         const parsed = parseArray(splitLines);
-        writeToFile(parsed);
+        res.setHeader('Content-Type', 'application/json');
+        res.json(parsed);
     } catch (error) {
         console.log(error);
     }
-};
+});
 
-main();
+app.listen(3000);
