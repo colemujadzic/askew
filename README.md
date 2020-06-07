@@ -44,7 +44,7 @@ A little web app that exposes a simple interface to grab Azure AD product/SKU fr
 
 ### Server
 
-The server can be run in a Docker container, via the provided Dockerfile! 
+The server can be run in a Docker container, via the provided Dockerfile.
 
 To build the image yourself:
 
