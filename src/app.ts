@@ -69,11 +69,46 @@ const productList = async () => {
     return body;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const productByID = async (id: any) => {
+    try {
+        const response = await fetchMarkdown();
+        const lines = response.split('\n');
+        const index = _.findIndex(lines, (l: string) => {
+            return _.startsWith(l, '|');
+        });
+        const splitLines = lines.splice(index + 2);
+        const products: Product[] = parseArray(splitLines);
+        const product = _.find(products, (obj) => {
+            return obj.stringID === id;
+        });
+        if (product) {
+            const body: Product = product;
+            return body;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+    return [];
+};
+
 // GET /Products
 app.get('/products', async (req, res) => {
     try {
         res.setHeader('Content-Type', 'application/json');
         const body = await productList();
+        res.json(body);
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+// GET /Products<ID>
+app.get('/products/:stringID', async (req, res) => {
+    try {
+        const productID = _.get(req.params, 'stringID', '');
+        const body = await productByID(productID);
+        res.setHeader('Content-Type', 'application/json');
         res.json(body);
     } catch (error) {
         console.log(error);
