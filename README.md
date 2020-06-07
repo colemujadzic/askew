@@ -42,6 +42,26 @@ A little web app that exposes a simple interface to grab Azure AD product/SKU fr
 }
 ```
 
+### Server
+
+The server can be run in a Docker container, via the provided Dockerfile! 
+
+To build the image yourself:
+
+```
+git clone git@github.com:colemujadzic/askew.git
+cd askew
+docker build --tag your_name/askew .
+```
+
+To run the image:
+
+```
+docker run --publish 3000:3000 --detach your_name/askew
+```
+
+The service will be available on exposed port 3000 by default.
+
 ### Why even do this?
 Good question! I'm not sure! The Azure AD documentation includes an infrequently updated list of these, but I wasn't able to find a simple interface to access them programmatically (without resorting to using PowerShell, etc.) 
 
