@@ -30,6 +30,19 @@ A little web app that exposes a simple interface to grab Azure AD product/SKU fr
 ...
 ```
 
+* GET /products/<stringID>
+
+```
+GET /products/EXCHANGE_S_ESSENTIALS
+
+{
+    "productName": "EXCHANGE ONLINE ESSENTIALS",
+    "stringID": "EXCHANGE_S_ESSENTIALS",
+    "guid": "e8f81a67-bd96-4074-b108-cf193eb9433b",
+    "servicePlansIncluded": "EXCHANGE_S_ESSENTIALS (1126bef5-da20-4f07-b45e-ad25d2581aa8)",
+    "servicePlansIncludedFriendlyNames": "EXCHANGE_S_ESSENTIALS (1126bef5-da20-4f07-b45e-ad25d2581aa8)"
+}
+```
 
 ### Why even do this?
 Good question! I'm not sure! The Azure AD documentation includes an infrequently updated list of these, but I wasn't able to find a simple interface to access them programmatically (without resorting to using PowerShell, etc.) 
