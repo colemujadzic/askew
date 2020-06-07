@@ -65,4 +65,4 @@ The service will be available on exposed port 3000 by default.
 ### Why even do this?
 Good question! I'm not sure! The Azure AD documentation includes an infrequently updated list of these, but I wasn't able to find a simple interface to access them programmatically (without resorting to using PowerShell, etc.) 
 
-tl;dr this is mainly just for fun!
+**tl;dr** this is mainly just for fun!
