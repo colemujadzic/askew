@@ -1,5 +1,5 @@
 # askew
-A little web app that exposes a simple interface to return Azure AD product/SKU friendly names in JSON
+A little web app that exposes a simple interface to grab Azure AD product/SKU friendly names in JSON
 
 ### Sample Usage
 
@@ -29,3 +29,9 @@ A little web app that exposes a simple interface to return Azure AD product/SKU 
     },
 ...
 ```
+
+
+### Why even do this?
+Good question! I'm not sure! The Azure AD documentation includes an infrequently updated list of these, but I wasn't able to find a simple interface to access them programmatically (without resorting to using PowerShell, etc.) 
+
+tl;dr this is mainly just for fun!
