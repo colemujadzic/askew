@@ -18,6 +18,23 @@ interface Product {
     servicePlansIncludedFriendlyNames: string | string[];
 }
 
+class Handler {
+    responseData: any;
+    constructor(responseData: any) {
+        this.responseData = responseData;
+    }
+    async fetchData() {
+        if (this.responseData) {
+            return this.responseData;
+        }
+        return fetchMarkdown().then((data: any) => {
+            this.responseData = data;
+            return Promise.resolve(this.responseData);
+        });
+    }
+}
+const dataHandler = new Handler(null);
+
 // fetchMarkdown() makes a GET request to fetch the contents of the markdown file
 const fetchMarkdown = () => {
     const options = {
@@ -25,7 +42,6 @@ const fetchMarkdown = () => {
         url: url,
     };
     // TODO: figure out a type here!
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return axios(options)
         .then((response: any) => {
             return Promise.resolve(response.data);
@@ -59,7 +75,7 @@ const parseArray = (arr: Array<string>) => {
 };
 
 const productList = async () => {
-    const response = await fetchMarkdown();
+    const response = await dataHandler.fetchData();
     const lines = response.split('\n');
     const index = _.findIndex(lines, (l: string) => {
         return _.startsWith(l, '|');
@@ -69,10 +85,9 @@ const productList = async () => {
     return body;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const productByID = async (id: any) => {
     try {
-        const response = await fetchMarkdown();
+        const response = await dataHandler.fetchData();
         const lines = response.split('\n');
         const index = _.findIndex(lines, (l: string) => {
             return _.startsWith(l, '|');
@@ -115,4 +130,4 @@ app.get('/products/:stringID', async (req, res) => {
     }
 });
 
-app.listen(3000);
+app.listen(process.env.PORT ? process.env.PORT : 3000);
