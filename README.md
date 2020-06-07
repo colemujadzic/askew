@@ -30,11 +30,9 @@ A little web app that exposes a simple interface to grab Azure AD product/SKU fr
 ...
 ```
 
-* GET /products/<stringID>
+* GET /products/\<stringID>
 
 ```
-GET /products/EXCHANGE_S_ESSENTIALS
-
 {
     "productName": "EXCHANGE ONLINE ESSENTIALS",
     "stringID": "EXCHANGE_S_ESSENTIALS",
