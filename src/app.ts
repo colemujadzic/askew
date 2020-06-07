@@ -104,7 +104,7 @@ const productByID = async (id: any) => {
     } catch (error) {
         console.log(error);
     }
-    return [];
+    return;
 };
 
 // GET /Products
@@ -114,7 +114,7 @@ app.get('/products', async (req, res) => {
         const body = await productList();
         res.json(body);
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ error: error.toString() });
     }
 });
 
@@ -124,9 +124,14 @@ app.get('/products/:stringID', async (req, res) => {
         const productID = _.get(req.params, 'stringID', '');
         const body = await productByID(productID);
         res.setHeader('Content-Type', 'application/json');
+        if (!body)
+            res.status(404).json({
+                status: 'error',
+                message: 'Product with the specified stringID does not exist',
+            });
         res.json(body);
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ error: error.toString() });
     }
 });
 
