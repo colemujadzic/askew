@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 import _ from 'lodash';
-import fs from 'fs';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axios = require('axios').default;
 import express from 'express';
@@ -27,9 +26,13 @@ const fetchMarkdown = () => {
     };
     // TODO: figure out a type here!
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return axios(options).then((response: any) => {
-        return Promise.resolve(response.data);
-    });
+    return axios(options)
+        .then((response: any) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: any) => {
+            console.log(error.toJSON());
+        });
 };
 
 // parseArray() takes an array of type string and parses out objects of type Product into a single array of objects
@@ -55,24 +58,23 @@ const parseArray = (arr: Array<string>) => {
     return products;
 };
 
-/*
-// writeToFile() writes the resultant Product array to a file
-const writeToFile = (arr: Product[]) => {
-    return fs.writeFileSync('./data.json', JSON.stringify(arr, null, 2), 'utf-8');
+const productList = async () => {
+    const response = await fetchMarkdown();
+    const lines = response.split('\n');
+    const index = _.findIndex(lines, (l: string) => {
+        return _.startsWith(l, '|');
+    });
+    const splitLines = lines.splice(index + 2);
+    const body: Product[] = parseArray(splitLines);
+    return body;
 };
-*/
 
+// GET /Products
 app.get('/products', async (req, res) => {
     try {
-        const response = await fetchMarkdown();
-        const lines = response.split('\n');
-        const index = _.findIndex(lines, (l: string) => {
-            return _.startsWith(l, '|');
-        });
-        const splitLines = lines.splice(index + 2);
-        const parsed = parseArray(splitLines);
         res.setHeader('Content-Type', 'application/json');
-        res.json(parsed);
+        const body = await productList();
+        res.json(body);
     } catch (error) {
         console.log(error);
     }
