@@ -1,5 +1,5 @@
 # askew
-A little web app that exposes a simple interface to grab Azure AD product/SKU friendly names in JSON
+A little web app that exposes a simple interface to grab Azure AD product/SKU friendly names in JSON. Data returned by the `/products` endpoint is itself scraped from [the Azure Active Directory documentation.](https://docs.microsoft.com/en-us/azure/active-directory/users-groups-roles/licensing-service-plan-reference)
 
 ### Sample Usage
 
