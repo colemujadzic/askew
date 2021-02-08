@@ -1,13 +1,12 @@
 import 'reflect-metadata';
 import _ from 'lodash';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const axios = require('axios').default;
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import express from 'express';
 const app = express();
 
 // the location of the markdown file
 const url =
-    'https://raw.githubusercontent.com/colemujadzic/azure-docs/master/articles/active-directory/users-groups-roles/licensing-service-plan-reference.md';
+    'https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/active-directory/enterprise-users/licensing-service-plan-reference.md';
 
 // a Microsoft online service product
 interface Product {
@@ -19,34 +18,33 @@ interface Product {
 }
 
 class Handler {
-    responseData: any;
-    constructor(responseData: any) {
+    responseData?: string;
+    constructor(responseData?: string) {
         this.responseData = responseData;
     }
     async fetchData() {
         if (this.responseData) {
             return this.responseData;
         }
-        return fetchMarkdown().then((data: any) => {
+        return fetchMarkdown().then((data: string) => {
             this.responseData = data;
             return Promise.resolve(this.responseData);
         });
     }
 }
-const dataHandler = new Handler(null);
+const dataHandler = new Handler();
 
 // fetchMarkdown() makes a GET request to fetch the contents of the markdown file
 const fetchMarkdown = () => {
-    const options = {
+    const options: AxiosRequestConfig = {
         method: 'get',
         url: url,
     };
-    // TODO: figure out a type here!
     return axios(options)
-        .then((response: any) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response.data);
         })
-        .catch((error: any) => {
+        .catch((error: AxiosError) => {
             console.log(error.toJSON());
         });
 };
